@@ -1,18 +1,21 @@
 -module(multiples).
 
--export([count_multiples/2]).
+-export([count_3_5/1]).
 -export([test/0]).
 
+-spec count_3_5(integer()) -> integer().
+count_3_5(Limit) ->
+	count_3_5(0, 0, 0, Limit).
 
--spec count_multiples([integer()], integer()) -> integer().
-count_multiples(Multiples, Limit) ->
-	lists:foldl(fun (X, Sum) -> Sum + count_multiples(X, 0, 0, Limit) end, 0, Multiples).
-
-count_multiples(_X, Product, Sum, Limit) when Product >= Limit ->
+count_3_5(P3, P5, Sum, Limit) when P3 >= Limit, P5 >= Limit ->
 	Sum;
-count_multiples(X, Product, Sum, Limit) ->
-	count_multiples(X, Product + X, Sum + Product, Limit).
+count_3_5(P3, P5, Sum, Limit) when P3 =:= P5 ->
+	count_3_5(P3 + 3, P5 + 5, Sum + P3, Limit);
+count_3_5(P3, P5, Sum, Limit) when P3 < P5 ->
+	count_3_5(P3 + 3, P5, Sum + P3, Limit);
+count_3_5(P3, P5, Sum, Limit) when P3 > P5 ->
+	count_3_5(P3, P5 + 5, Sum + P5, Limit).
 
 
 test() ->
-	count_multiples([3,5], 1000).
+	count_3_5(1000).
